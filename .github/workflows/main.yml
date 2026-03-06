@@ -1,7 +1,7 @@
 name: PDF Update Checker
 on:
   schedule:
-    - cron: '0 6 * * 1-5' # 日本時間の平日15時 (15-9=6)
+    - cron: '0 6 * * 1-5' # 日本時間の平日15時
   workflow_dispatch: # 手動でテスト実行するためのボタン
 
 jobs:
