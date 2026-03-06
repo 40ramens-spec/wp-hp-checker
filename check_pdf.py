@@ -3,7 +3,7 @@ import os
 
 # --- 設定 ---
 # あなたのサイトURLに書き換えてください
-WP_API_URL = "https://www.jmdm.co.jp/wp-json/wp/v2/media?mime_type=application/pdf&per_page=1&orderby=date&order=desc"
+WP_API_URL = "https://www.jmdm.co.jp/wp-json/wp/v2/media?mime_type=application/pdf&per_page=1"
 WEBHOOK_URL = os.environ.get("SLACK_WEBHOOK_URL")
 ID_FILE = "last_id.txt"
 
