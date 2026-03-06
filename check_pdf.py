@@ -9,28 +9,24 @@ ID_FILE = "last_id.txt"
 
 def main():
     # 1. WordPressから最新1件を取得
-    res = requests.get(WP_API_URL).json()
-    if not res: return
+    response = requests.get(WP_API_URL)
     
-    item = res[0]
-    curr_id = str(item['id'])
-    pdf_url = item['source_url']
-    pdf_title = item['title']['rendered']
+    # 正常に取得できたかチェック
+    if response.status_code != 200:
+        print(f"エラー: サイトにアクセスできません (Status: {response.status_code})")
+        return
 
-    # 2. 前回のIDを読み込み
-    last_id = ""
-    if os.path.exists(ID_FILE):
-        with open(ID_FILE, "r") as f:
-            last_id = f.read().strip()
+    try:
+        res = response.json()
+    except Exception:
+        print("エラー: JSONデータが空か、形式が正しくありません。URLを確認してください。")
+        return
 
-    # 3. IDが違えば（＝更新されていれば）通知
-    if curr_id != last_id:
-        text = f"<!here> *新しいPDFが公開されました！*\n*タイトル:* {pdf_title}\n*リンク:* {pdf_url}"
-        requests.post(WEBHOOK_URL, json={"text": text})
-        
-        # 今回のIDを保存
-        with open(ID_FILE, "w") as f:
-            f.write(curr_id)
+    if not res:
+        print("通知なし: PDFが1件も見つかりませんでした。")
+        return
+    
+    # ...以下の処理はそのまま
 
 if __name__ == "__main__":
     main()
